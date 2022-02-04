@@ -1,17 +1,47 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+// import App from './App';
+// import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+// const text = React.createElement('h1', null,'i`m already ready')
+// const elem = (
+//   <div>
+//     <h2> Start project!</h2>
+//   </div>
+// )
+const Header = () => {
+  return <h2> Start project!</h2>
+}
+const Field = () => {
+  const holder = "Enter here";
+  const styledField = {
+    width: '200px',
+    backgroundColor: '#444444'
+  }
+  return <input
+        style={styledField}
+        type="text"
+        placeholder={holder}
+        autoComplete=''
+        className='first'
+        htmlFor='' />
+}
+const Btn = () => {
+  const text = "START"
+  // const p = <p>Let's go</p>
+  const logged = true;
+  const res = () => {
+    return "Start in"
+  }
+  return <button>{logged ? text : res()}</button>
+}
+const App = () => {
+  return (
+    <div>
+      <Header /> <Field /> <Btn />
+    </div>
+  )
+}
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+ReactDOM.render(<App />, document.getElementById('root'));
