@@ -2,7 +2,7 @@ import React from "react";
 
 const PostAddForm = () => {
     return (
-        <form className="botton-panel d-flex">
+        <form className="bottom-panel d-flex">
             <input
                 type="text"
                 placeholder="What are you thinking?"
