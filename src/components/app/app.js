@@ -11,10 +11,10 @@ import './app.css';
 const App = () => {
 
     const data = [
-        {label: "Going" , star: true, id: "fjvhjjh"},
+        {label: "Going to learn" ,  id: "fjvhjjh"},
         {label: "It's very well", star: false, id: "yghjg"},
-        {label: "Try again" , star: true, id: "tyrv"},
-        {label: "Continue" , star: true, id: "hjvj"},
+        {label: "Try the React" , star: true, id: "tyrv"},
+        {label: "Continue..." , star: true, id: "hjvj"},
     ]
 
     return (
