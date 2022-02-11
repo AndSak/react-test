@@ -19,7 +19,7 @@ class PostListItem extends Component {
   }
 
   render() {
-    const { label } = this.props;
+    const { label, delMes } = this.props;
     const { star, like } = this.state;
     let classAll = "app-list-item d-flex justify-content-between";
 
@@ -35,7 +35,7 @@ class PostListItem extends Component {
           <button type="button" className="btn-star btn-sm" onClick={this.turnStar}>
             <i className="fa fa-star"></i>
           </button>
-          <button type="button" className="btn-trash btn-sm">
+          <button type="button" className="btn-trash btn-sm" onClick={delMes}>
             <i className="fa fa-trash-o"></i>
           </button>
           <i className="fa fa-heart"></i>
