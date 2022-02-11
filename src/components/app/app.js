@@ -18,23 +18,38 @@ class App extends Component {
         super(props);
         this.state = {
             data: [
-                { label: "Going to learn", id: "fjvhjjh" },
-                { label: "It's very well", star: false, id: "yghjg" },
-                { label: "Try the React", star: true, id: "tyrv" },
-                { label: "Continue...", star: true, id: "hjvj" },
+                { label: "Going to learn", id: 1 },
+                { label: "It's very well", star: false, id: 2 },
+                { label: "Try the React", star: true, id: 3 },
+                { label: "Continue...", star: true, id: 4 },
             ]
         };
-       this.deleteItem = this.deleteItem.bind(this); 
+        this.addItem = this.addItem.bind(this);
+        this.deleteItem = this.deleteItem.bind(this);
+        this.maxId = 5;
     }
-deleteItem(id){
-    this.setState(({data}) => {
-        const index = data.findIndex(elem => elem.id === id);
+    addItem(body) {
+        const newMessage = {
+            label: body,
+            star: false,
+            id: this.maxId++,
+        };
+        
+        this.setState(({data}) => {
+            const newArr = [...data, newMessage];
+            return {data: newArr};
+        });
+    }
 
-        const newData = [...data.slice(0, index), ...data.slice(index+1) ];
+    deleteItem(id) {
+        this.setState(({ data }) => {
+            const index = data.findIndex(elem => elem.id === id);
 
-        return {data: newData}
-    });
-}
+            const newData = [...data.slice(0, index), ...data.slice(index + 1)];
+
+            return { data: newData }
+        });
+    }
 
     render() {
         return (
@@ -45,7 +60,7 @@ deleteItem(id){
                     <PostStatusFilter />
                 </div>
                 <PostList posts={this.state.data} delMes={this.deleteItem} />
-                <PostAddForm />
+                <PostAddForm addMes={this.addItem} />
             </AppBlockWW>
         )
     }
