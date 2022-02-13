@@ -3,24 +3,11 @@ import React, { Component } from "react";
 import './post-list-item.scss'
 
 class PostListItem extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { star: false, like: false };
-    this.turnStar = this.turnStar.bind(this);
-    this.turnLike = this.turnLike.bind(this);
-  }
-
-  turnStar() {
-    this.setState(({ star }) => ({ star: !star }))
-  }
-
-  turnLike() {
-    this.setState(({ like }) => ({ like: !like }))
-  }
+  
 
   render() {
-    const { label, delMes } = this.props;
-    const { star, like } = this.state;
+    const { label, delMes, onToggleImportant, onToggleLiked, star, like } = this.props;
+
     let classAll = "app-list-item d-flex justify-content-between";
 
     if (star) { classAll += " important" }
@@ -28,11 +15,11 @@ class PostListItem extends Component {
 
     return (
       <div className={classAll}>
-        <span className="app-list-item-label" onClick={this.turnLike}>
+        <span className="app-list-item-label" onClick={onToggleLiked}>
           {label}
         </span>
         <div className="d-flex justify-content-center align-items-center">
-          <button type="button" className="btn-star btn-sm" onClick={this.turnStar}>
+          <button type="button" className="btn-star btn-sm" onClick={onToggleImportant}>
             <i className="fa fa-star"></i>
           </button>
           <button type="button" className="btn-trash btn-sm" onClick={delMes}>
