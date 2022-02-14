@@ -18,15 +18,21 @@ class App extends Component {
         super(props);
         this.state = {
             data: [
-                { label: "Going to learn", id: 1 },
-                { label: "It's very well", star: false, id: 2 },
-                { label: "Try the React", star: true, id: 3 },
-                { label: "Continue...", star: true, id: 4 },
-            ]
+                { label: "Going to learn", star: false, like: false, id: 1 },
+                { label: "It's very well", star: false, like: false, id: 2 },
+                { label: "Try the React", star: true, like: false, id: 3 },
+                { label: "Continue...", star: true, like: false, id: 4 },
+            ],
+            term: '',
+            filter: 'all',
         };
         this.addItem = this.addItem.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
         this.maxId = 5;
+        this.onToggleImportant = this.onToggleImportant.bind(this);
+        this.onToggleLiked = this.onToggleLiked.bind(this);
+        this.onUpdateSearchNext = this.onUpdateSearchNext.bind(this);
+        this.onFilterSelect = this.onFilterSelect.bind(this);
     }
     addItem(body) {
         const newMessage = {
@@ -34,10 +40,10 @@ class App extends Component {
             star: false,
             id: this.maxId++,
         };
-        
-        this.setState(({data}) => {
+
+        this.setState(({ data }) => {
             const newArr = [...data, newMessage];
-            return {data: newArr};
+            return { data: newArr };
         });
     }
 
@@ -51,17 +57,77 @@ class App extends Component {
         });
     }
 
+    onToggleImportant(id) {
+        this.setState(({ data }) => {
+            const index = data.findIndex(elem => elem.id === id);
+            const old = data[index];
+            const newItem = { ...old, star: !old.star };
+            const newArray = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
+
+            return { data: newArray }
+        })
+    }
+
+    onToggleLiked(id) {
+        this.setState(({ data }) => {
+            const index = data.findIndex(elem => elem.id === id);
+            const old = data[index];
+            const newItem = { ...old, like: !old.like };
+            const newArray = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
+
+            return { data: newArray }
+        })
+    }
+
+    searchPost(items, term) {
+        if (term.length === 0) return items;
+
+        return items.filter(item => {
+            return (item.label.indexOf(term) > -1)
+        });
+    }
+
+    onUpdateSearchNext(term) {
+        this.setState({ term })
+    }
+
+    filterPost(items, filter) {
+        if (filter === 'like') {
+            return items.filter(item => item.like)
+        } else {
+            return items
+        }
+    }
+
+    onFilterSelect(filter){
+        this.setState({filter})
+    }
+
     render() {
+        const { data, term, filter } = this.state;
+        const likedYet = data.filter(item => item.like).length;
+        const allPosts = data.length;
+        const visiblePosts = this.filterPost(this.searchPost(data, term), filter);
+
         return (
-            <AppBlockWW >
-                <AppHeader />
+            <div >
+                <AppHeader
+                    likedYet={likedYet}
+                    allPosts={allPosts} />
                 <div className="search-panel d-flex">
-                    <SearchPanel />
-                    <PostStatusFilter />
+                    <SearchPanel
+                        onUpdateSearchNext={this.onUpdateSearchNext} />
+                    <PostStatusFilter
+                        filter={filter}
+                        onFilterSelect={this.onFilterSelect} />
                 </div>
-                <PostList posts={this.state.data} delMes={this.deleteItem} />
+                <PostList
+                    posts={visiblePosts}
+                    delMes={this.deleteItem}
+                    onToggleImportant={this.onToggleImportant}
+                    onToggleLiked={this.onToggleLiked} />
                 <PostAddForm addMes={this.addItem} />
-            </AppBlockWW>
+            </div>
         )
     }
 }

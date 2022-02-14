@@ -18,11 +18,11 @@ const Header = styled.div`
     color: rgb(211, 92, 92);
 }
 `
-const AppHeader = () => {
+const AppHeader = ({allPosts, likedYet}) => {
     return (
         <Header ourIf = {false}>
             <h1>Andrei Sak</h1>
-            <h2>5 notice, liked to ...</h2>
+            <h2>{allPosts}  notice, liked to {likedYet}</h2>
         </Header>
     )
 }
