@@ -23,7 +23,8 @@ class App extends Component {
                 { label: "Try the React", star: true, like: false, id: 3 },
                 { label: "Continue...", star: true, like: false, id: 4 },
             ],
-            term: ''
+            term: '',
+            filter: 'all',
         };
         this.addItem = this.addItem.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
@@ -31,7 +32,7 @@ class App extends Component {
         this.onToggleImportant = this.onToggleImportant.bind(this);
         this.onToggleLiked = this.onToggleLiked.bind(this);
         this.onUpdateSearchNext = this.onUpdateSearchNext.bind(this);
-
+        this.onFilterSelect = this.onFilterSelect.bind(this);
     }
     addItem(body) {
         const newMessage = {
@@ -86,37 +87,47 @@ class App extends Component {
         });
     }
 
-    onUpdateSearchNext(term){
-        this.setState({term})
+    onUpdateSearchNext(term) {
+        this.setState({ term })
+    }
+
+    filterPost(items, filter) {
+        if (filter === 'like') {
+            return items.filter(item => item.like)
+        } else {
+            return items
+        }
+    }
+
+    onFilterSelect(filter){
+        this.setState({filter})
     }
 
     render() {
-        const { data, term } = this.state;
+        const { data, term, filter } = this.state;
         const likedYet = data.filter(item => item.like).length;
         const allPosts = data.length;
-        const visiblePosts = this.searchPost(data, term);
+        const visiblePosts = this.filterPost(this.searchPost(data, term), filter);
 
         return (
-            <AppBlockWW >
+            <div >
                 <AppHeader
                     likedYet={likedYet}
-                    allPosts={allPosts}
-                />
+                    allPosts={allPosts} />
                 <div className="search-panel d-flex">
                     <SearchPanel
-                        onUpdateSearchNext={this.onUpdateSearchNext}
-                    />
-                    <PostStatusFilter />
+                        onUpdateSearchNext={this.onUpdateSearchNext} />
+                    <PostStatusFilter
+                        filter={filter}
+                        onFilterSelect={this.onFilterSelect} />
                 </div>
                 <PostList
                     posts={visiblePosts}
                     delMes={this.deleteItem}
                     onToggleImportant={this.onToggleImportant}
-                    onToggleLiked={this.onToggleLiked}
-
-                />
+                    onToggleLiked={this.onToggleLiked} />
                 <PostAddForm addMes={this.addItem} />
-            </AppBlockWW>
+            </div>
         )
     }
 }

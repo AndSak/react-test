@@ -12,10 +12,12 @@ class PostAddForm extends Component {
         this.setState({ text: ev.target.value })
     }
 
-    onSubmit(ev){
+    onSubmit(ev) {
         ev.preventDefault();
-        this.props.addMes(this.state.text);
-        this.setState({ text: ''});
+        if (this.state.text.length > 1) {
+            this.props.addMes(this.state.text);
+            this.setState({ text: '' });
+        }
     }
 
     render() {
@@ -28,7 +30,7 @@ class PostAddForm extends Component {
                     placeholder="What are you thinking?"
                     className="form-control new-post-label"
                     onChange={this.onValueChange}
-                    value ={this.state.text}
+                    value={this.state.text}
                 />
                 <button
                     type="submit"
